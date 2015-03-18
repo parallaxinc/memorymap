@@ -7,7 +7,7 @@
 
 INCLUDEPATH += . ..
 
-LIBS += -lQHexEdit -L$$PWD/QHexEdit/
+LIBS += -L../QHexEdit -lQHexEdit
 
 QT += gui widgets
 

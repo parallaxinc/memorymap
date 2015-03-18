@@ -2,6 +2,6 @@ TEMPLATE=subdirs
 
 SUBDIRS = \
     QHexEdit \
-    memorymap
+    widget 
 
-memorymap.depends = QHexEdit
+widget.depends = QHexEdit
