@@ -4,8 +4,8 @@ TEMPLATE = app
 TARGET = memorymap
 
 SOURCES += \
-    main.cpp \
-    memorymap.cpp
+    memorymap.cpp \
+    main.cpp
 
 HEADERS += \
     memorymap.h
