@@ -9,3 +9,6 @@ SOURCES += \
 
 HEADERS += \
     memorymap.h
+
+FORMS += \
+    memorymap.ui
