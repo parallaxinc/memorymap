@@ -1,0 +1,3 @@
+[submodule "QHexEdit"]
+	path = QHexEdit
+	url = https://github.com/parallaxinc/QHexEdit.git
