@@ -63,3 +63,7 @@ void MemoryMap::fixWidth(int width)
     setFixedWidth(w);
 }
 
+void MemoryMap::updateColors()
+{
+    emit getRecolor(this);
+}

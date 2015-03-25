@@ -29,5 +29,9 @@ public:
 public slots:
     void fixWidth(int width);
     void load();
+    void updateColors();
+
+signals:
+    void getRecolor(QWidget * widget);
 };
 
