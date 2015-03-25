@@ -1,15 +1,36 @@
 #include "memorymap.h"
 #include "memorymapprivate.h"
 
+#include <QFileDialog>
+
 MemoryMap::MemoryMap(QWidget *parent): QWidget(parent)
 {
     ui.setupUi(this);
     connect(ui.frame, SIGNAL(widthChanged(int)), this, SLOT(fixWidth(int)));
+    connect(ui.buttonOpenBinary, SIGNAL(clicked()), this, SLOT(load()));
 }
 
-void MemoryMap::loadFile(QString filename)
+void MemoryMap::loadFile(QString binaryfile)
 {
-    ui.frame->loadFile(filename);
+    QFile file(binaryfile);
+    if (!file.open(QIODevice::ReadOnly)) return;
+    loadData(file.readAll());
+}
+
+void MemoryMap::loadData(QByteArray binarydata)
+{
+    data.clear();
+    data = binarydata;
+    ui.frame->loadData(binarydata);
+    ui.programSizeBar->setValue(data.size()/4); // longs
+}
+
+void MemoryMap::load()
+{
+    QString fn = QFileDialog::getOpenFileName(this, tr("Open binary..."),
+            QString(), tr("Binary files (*.binary);;All Files (*)"));
+        if (!fn.isEmpty())
+            loadFile(fn);
 }
 
 void MemoryMap::setFont(QFont font)
@@ -38,5 +59,7 @@ void MemoryMap::recolor(
 
 void MemoryMap::fixWidth(int width)
 {
-    setFixedWidth(width);
+    int w = width + qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+    setFixedWidth(w);
 }
+

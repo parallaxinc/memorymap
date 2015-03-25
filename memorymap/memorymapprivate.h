@@ -15,7 +15,7 @@ public:
             QColor addr_background,
             QColor addr_text,
             QColor addr_highlight);
-    void loadFile(QString filename);
+    void loadData(QByteArray binarydata);
 
 public slots:
     void fixWidth(int width);

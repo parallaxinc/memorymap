@@ -1,10 +1,10 @@
 include(../memorymap.pri)
 
-TEMPLATE = lib
+TEMPLATE = app
 TARGET = memorymap
-CONFIG += staticlib
 
 SOURCES += \
+    main.cpp \
     memorymap.cpp \
     memorymapprivate.cpp \
 

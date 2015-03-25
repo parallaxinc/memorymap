@@ -57,9 +57,9 @@ void MemoryMapPrivate::fixWidth(int width)
     setFixedWidth(width);
 }
 
-void MemoryMapPrivate::loadFile(QString filename)
+void MemoryMapPrivate::loadData(QByteArray binarydata)
 {
-    QHexEditData * hexeditdata = QHexEditData::fromFile(filename);
+    QHexEditData * hexeditdata = QHexEditData::fromMemory(binarydata);
     setData(hexeditdata);
 }
 
