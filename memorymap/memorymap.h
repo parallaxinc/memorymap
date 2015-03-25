@@ -13,7 +13,7 @@ private:
     QByteArray data;
 
 public:
-    explicit MemoryMap(QWidget *parent = 0);
+    explicit MemoryMap(QWidget *parent = 0, Qt::WindowFlags f = 0);
     void recolor(
             QColor hex_background,
             QColor hex_line,

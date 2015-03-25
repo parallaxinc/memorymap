@@ -3,7 +3,7 @@
 
 #include <QFileDialog>
 
-MemoryMap::MemoryMap(QWidget *parent): QWidget(parent)
+MemoryMap::MemoryMap(QWidget *parent, Qt::WindowFlags f = 0) : QWidget(parent)
 {
     ui.setupUi(this);
     connect(ui.frame, SIGNAL(widthChanged(int)), this, SLOT(fixWidth(int)));
