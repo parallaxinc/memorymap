@@ -4,8 +4,6 @@
 MemoryMap::MemoryMap(QWidget *parent): QWidget(parent)
 {
     ui.setupUi(this);
-    connect(ui.buttonLoadBinary,SIGNAL(clicked()),this,SLOT(bigger()));
-    connect(ui.buttonSaveBinary,SIGNAL(clicked()),this,SLOT(smaller()));
     connect(ui.frame, SIGNAL(widthChanged(int)), this, SLOT(fixWidth(int)));
 }
 
