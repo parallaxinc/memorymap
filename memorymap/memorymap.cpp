@@ -55,6 +55,10 @@ void MemoryMap::recolor(
             addr_background,
             addr_text,
             addr_highlight);
+
+    // QHexEdit would require non-trivial refactoring to 
+    // allow updating hex_text color without reloading data
+    ui.frame->loadData(data); 
 }
 
 void MemoryMap::fixWidth(int width)
