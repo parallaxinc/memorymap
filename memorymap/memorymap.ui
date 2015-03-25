@@ -183,19 +183,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="buttonSaveEeprom">
-       <property name="toolTip">
-        <string>Save EEPROM</string>
-       </property>
-       <property name="statusTip">
-        <string>Save padded EEPROM image to file</string>
-       </property>
-       <property name="text">
-        <string>Save EEPROM</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="buttonRun">
        <property name="toolTip">
         <string>Run</string>

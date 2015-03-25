@@ -2,12 +2,16 @@
 #include "memorymapprivate.h"
 
 #include <QFileDialog>
+#include <QDataStream>
 
-MemoryMap::MemoryMap(QWidget *parent, Qt::WindowFlags f) : QWidget(parent)
+MemoryMap::MemoryMap(QWidget *parent) : QWidget(parent)
 {
     ui.setupUi(this);
     connect(ui.frame, SIGNAL(widthChanged(int)), this, SLOT(fixWidth(int)));
     connect(ui.buttonOpenBinary, SIGNAL(clicked()), this, SLOT(load()));
+    connect(ui.buttonSaveBinary, SIGNAL(clicked()), this, SLOT(save()));
+    connect(ui.buttonRun, SIGNAL(clicked()), this, SLOT(sendRun()));
+    connect(ui.buttonWrite, SIGNAL(clicked()), this, SLOT(sendWrite()));
 }
 
 void MemoryMap::loadFile(QString binaryfile)
@@ -31,6 +35,22 @@ void MemoryMap::load()
             QString(), tr("Binary files (*.binary);;All Files (*)"));
         if (!fn.isEmpty())
             loadFile(fn);
+}
+
+void MemoryMap::save()
+{
+    QString fn = QFileDialog::getSaveFileName(this, tr("Save as..."),
+            QString(), tr("Binary files (*.binary);;All Files (*)"));
+
+    if (fn.isEmpty())
+        return;
+
+    QFile file(fn);
+    if (file.open(QIODevice::WriteOnly))
+    {
+        QDataStream stream(&file);
+        stream << data;
+    }
 }
 
 void MemoryMap::setFont(QFont font)
@@ -70,4 +90,14 @@ void MemoryMap::fixWidth(int width)
 void MemoryMap::updateColors()
 {
     emit getRecolor(this);
+}
+
+void MemoryMap::sendRun()
+{
+    emit run(data);
+}
+
+void MemoryMap::sendWrite()
+{
+    emit write(data);
 }
