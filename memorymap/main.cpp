@@ -2,22 +2,22 @@
 #include <QDebug>
 #include <QWidget>
 
-#include "ui_memorymap.h"
+#include "memorymap.h"
 
 int main(int argc, char *argv[])
 {
 
     QApplication app(argc, argv);
 
-    QWidget * widget = new QWidget;
+    MemoryMap * map = new MemoryMap;
+    map->loadFile("LameSerial.binary");
 
-    Ui::MemoryMapDialog ui;
-    ui.setupUi(widget);
+    QFont f = QFont("Courier",14);
+    f.setFixedPitch(true);
+    f.setKerning(false);
+    map->setFont(f);
 
-    ui.frame->loadFile("LameSerial.binary");
-    qDebug() << ui.frame->size(); widget->size();
-    widget->show();
-    widget->setWindowTitle(QObject::tr("Memory Map"));
+    map->show();
 
     return app.exec();
 }

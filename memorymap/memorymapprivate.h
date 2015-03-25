@@ -1,18 +1,12 @@
 #pragma once
 
-#include <QWidget>
-#include <QColor>
-#include <QResizeEvent>
-#include "ui_memorymap.h"
+#include "QHexEdit/qhexedit.h"
 
-class MemoryMap : public QWidget
+class MemoryMapPrivate : public QHexEdit
 {
     Q_OBJECT
-private:
-    Ui::MemoryMap ui;
-
 public:
-    explicit MemoryMap(QWidget *parent = 0);
+    explicit MemoryMapPrivate(QWidget *parent = 0);
     void recolor(
             QColor hex_background,
             QColor hex_line,
@@ -21,10 +15,10 @@ public:
             QColor addr_background,
             QColor addr_text,
             QColor addr_highlight);
-
-    void setFont(QFont font);
     void loadFile(QString filename);
+
 public slots:
     void fixWidth(int width);
+    QSize sizeHint() const;
 };
 

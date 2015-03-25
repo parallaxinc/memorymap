@@ -4,11 +4,13 @@ TEMPLATE = app
 TARGET = memorymap
 
 SOURCES += \
+    main.cpp \
     memorymap.cpp \
-    main.cpp
+    memorymapprivate.cpp \
 
 HEADERS += \
-    memorymap.h
+    memorymap.h \
+    memorymapprivate.h \
 
 FORMS += \
     memorymap.ui
