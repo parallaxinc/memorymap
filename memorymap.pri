@@ -8,6 +8,7 @@
 INCLUDEPATH += . ..
 
 LIBS += -L../QHexEdit -lQHexEdit
+PRE_TARGETDEPS += ../QHexEdit/libQHexEdit.a
 
 QT += gui widgets
 
