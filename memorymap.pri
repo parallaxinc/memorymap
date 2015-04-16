@@ -11,4 +11,4 @@ LIBS += -L../QHexEdit -lQHexEdit
 PRE_TARGETDEPS += ../QHexEdit/libQHexEdit.a
 
 QT += gui widgets
-
+CONFIG -= debug_and_release
