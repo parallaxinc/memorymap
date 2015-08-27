@@ -8,7 +8,12 @@
 INCLUDEPATH += . ..
 
 LIBS += -L../QHexEdit -lQHexEdit
-PRE_TARGETDEPS += ../QHexEdit/libQHexEdit.a
+
+win32-msvc* {
+	PRE_TARGETDEPS += ../QHexEdit/QHexEdit.lib
+} else {
+	PRE_TARGETDEPS += ../QHexEdit/libQHexEdit.a
+}
 
 QT += gui widgets
 CONFIG -= debug_and_release
