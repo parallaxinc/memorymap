@@ -2,15 +2,17 @@
 #include <QDebug>
 #include <QWidget>
 
-#include "memorymap.h"
+#include <MemoryMap>
 
 int main(int argc, char *argv[])
 {
 
     QApplication app(argc, argv);
+    QStringList args = app.arguments();
+    if (args.isEmpty()) return 1;
 
     MemoryMap * map = new MemoryMap;
-    map->loadFile("LameSerial.binary");
+    map->loadFile(args[0]);
 
     map->show();
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "QHexEdit/qhexedit.h"
+#include "../QHexEdit/qhexedit.h"
 
 class MemoryMapPrivate : public QHexEdit
 {

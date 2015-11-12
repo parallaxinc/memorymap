@@ -4,7 +4,7 @@
 #include <QColor>
 #include <Qt>
 
-#include "QHexEdit/qhexeditdata.h"
+#include "../QHexEdit/qhexeditdata.h"
 
 MemoryMapPrivate::MemoryMapPrivate(QWidget *parent): QHexEdit(parent)
 {

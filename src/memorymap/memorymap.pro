@@ -1,8 +1,15 @@
-include(../memorymap.pri)
+include(../src.pri)
 
 TEMPLATE = lib
 TARGET = memorymap
-CONFIG += staticlib
+
+LIBS += -L../../lib/ -lQHexEdit
+
+win32-msvc* {
+	PRE_TARGETDEPS += ../../lib/QHexEdit.lib
+} else {
+	PRE_TARGETDEPS += ../../lib/libQHexEdit.a
+}
 
 SOURCES += \
     memorymap.cpp \

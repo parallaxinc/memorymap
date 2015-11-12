@@ -37,3 +37,7 @@ Makefile*
 
 # Vim
 *~
+
+/lib/
+/bin/
+*.swp
