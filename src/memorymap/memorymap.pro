@@ -1,15 +1,13 @@
-include(../src.pri)
+include(../QHexEdit/include.pri)
+
+QT += gui widgets
+
+CONFIG -= debug_and_release app_bundle
+CONFIG += staticlib
 
 TEMPLATE = lib
 TARGET = memorymap
-
-LIBS += -L../../lib/ -lQHexEdit
-
-win32-msvc* {
-	PRE_TARGETDEPS += ../../lib/QHexEdit.lib
-} else {
-	PRE_TARGETDEPS += ../../lib/libQHexEdit.a
-}
+DESTDIR = ../../lib/
 
 SOURCES += \
     memorymap.cpp \
