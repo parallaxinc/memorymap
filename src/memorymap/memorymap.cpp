@@ -1,46 +1,66 @@
 #include "memorymap.h"
+
+#include <QDataStream>
+#include <QFileDialog>
+
+#include <PropellerLoader>
+
 #include "memorymapprivate.h"
 
-#include <QFileDialog>
-#include <QDataStream>
-
-MemoryMap::MemoryMap(QWidget *parent) : QWidget(parent)
+MemoryMap::MemoryMap(PropellerManager * manager, QWidget *parent) : QWidget(parent)
 {
+    this->manager = manager;
     ui.setupUi(this);
-    connect(ui.frame, SIGNAL(widthChanged(int)), this, SLOT(fixWidth(int)));
-    connect(ui.buttonOpenBinary, SIGNAL(clicked()), this, SLOT(load()));
-    connect(ui.buttonSaveBinary, SIGNAL(clicked()), this, SLOT(save()));
+//    connect(ui.memorymap, SIGNAL(widthChanged(int)), this, SLOT(fixWidth(int)));
+    connect(ui.buttonOpen, SIGNAL(clicked()), this, SLOT(open()));
+    connect(ui.buttonSave, SIGNAL(clicked()), this, SLOT(save()));
     connect(ui.buttonRun, SIGNAL(clicked()), this, SLOT(sendRun()));
     connect(ui.buttonWrite, SIGNAL(clicked()), this, SLOT(sendWrite()));
+
+    ui.memorybar->configure(0, 8192, 0, 0, 0); 
 }
 
-void MemoryMap::loadFile(QString binaryfile)
+void MemoryMap::openFile(QString binaryfile)
 {
     QFile file(binaryfile);
     if (!file.open(QIODevice::ReadOnly)) return;
-    loadData(file.readAll());
+    openData(file.readAll());
 }
 
-void MemoryMap::loadData(QByteArray binarydata)
+void MemoryMap::openData(QByteArray binarydata)
 {
-    data.clear();
-    data = binarydata;
-    ui.frame->loadData(binarydata);
-    ui.programSizeBar->setValue(data.size()/4); // longs
+    image.setData(binarydata);
+    ui.memorymap->loadData(binarydata);
+
+    ui.memorybar->configure(
+            0,
+            8192,
+            image.programSize()/4,
+            image.variableSize()/4, 
+            image.stackSize()/4
+            ); 
+
+    ui.longsProgram->setText(QString::number(image.programSize()/4));
+    ui.longsVariable->setText(QString::number(image.variableSize()/4));
+    ui.longsStack->setText(QString::number(image.stackSize()/4));
+
+    ui.clockMode->addItem(image.clockModeText());
+    ui.clockFrequency->setText(QString::number(image.clockFrequency()));
+
 }
 
-void MemoryMap::load()
+void MemoryMap::open()
 {
     QString fn = QFileDialog::getOpenFileName(this, tr("Open binary..."),
-            QString(), tr("Binary files (*.binary);;All Files (*)"));
+            QString(), tr("Binary images (*.binary);;EEPROM images (*.eeprom);;All files (*)"));
         if (!fn.isEmpty())
-            loadFile(fn);
+            openFile(fn);
 }
 
 void MemoryMap::save()
 {
     QString fn = QFileDialog::getSaveFileName(this, tr("Save as..."),
-            QString(), tr("Binary files (*.binary);;All Files (*)"));
+            QString(), tr("Binary images (*.binary);;EEPROM images (*.eeprom);;All files (*)"));
 
     if (fn.isEmpty())
         return;
@@ -49,13 +69,13 @@ void MemoryMap::save()
     if (file.open(QIODevice::WriteOnly))
     {
         QDataStream stream(&file);
-        stream << data;
+        stream << image.data();
     }
 }
 
 void MemoryMap::setFont(QFont font)
 {
-    ui.frame->setFont(font);
+    ui.memorymap->setFont(font);
 }
 
 void MemoryMap::recolor(
@@ -67,7 +87,7 @@ void MemoryMap::recolor(
             QColor addr_text,
             QColor addr_highlight)
 {
-    ui.frame->recolor(
+    ui.memorymap->recolor(
             hex_background,
             hex_line,
             hex_text,
@@ -78,13 +98,14 @@ void MemoryMap::recolor(
 
     // QHexEdit would require non-trivial refactoring to 
     // allow updating hex_text color without reloading data
-    ui.frame->loadData(data); 
+    ui.memorymap->loadData(image.data()); 
 }
 
 void MemoryMap::fixWidth(int width)
 {
-    int w = width + qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
-    setFixedWidth(w);
+    Q_UNUSED(width);
+//    int w = width + qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+//    setFixedWidth(w);
 }
 
 void MemoryMap::updateColors()
@@ -94,10 +115,24 @@ void MemoryMap::updateColors()
 
 void MemoryMap::sendRun()
 {
-    emit run(data);
+    emit run(image.data());
 }
 
 void MemoryMap::sendWrite()
 {
-    emit write(data);
+    emit write(image.data());
+}
+
+void MemoryMap::keyPressEvent(QKeyEvent* event)
+{
+    switch (event->key())
+    {
+        case Qt::Key_W:
+        case Qt::Key_Escape:
+            close();
+            break;
+        default:
+            event->ignore();
+            break;
+    }
 }

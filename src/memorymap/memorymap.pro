@@ -1,4 +1,6 @@
 include(../QHexEdit/include.pri)
+include(../../../projectview/include.pri)
+include(../../../propellermanager/include.pri)
 
 QT += gui widgets
 
@@ -16,6 +18,7 @@ SOURCES += \
 HEADERS += \
     memorymap.h \
     memorymapprivate.h \
+    memorybar.h \
 
 FORMS += \
     memorymap.ui

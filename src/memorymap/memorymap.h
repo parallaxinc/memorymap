@@ -1,8 +1,11 @@
 #pragma once
 
-#include <QWidget>
 #include <QColor>
-#include <QResizeEvent>
+#include <QWidget>
+
+#include <PropellerManager>
+#include <PropellerImage>
+
 #include "ui_memorymap.h"
 
 class MemoryMap : public QWidget
@@ -10,10 +13,13 @@ class MemoryMap : public QWidget
     Q_OBJECT
 private:
     Ui::MemoryMap ui;
-    QByteArray data;
+    void keyPressEvent(QKeyEvent* event);
+    PropellerManager * manager;
+    PropellerImage image;
+    QString port;
 
 public:
-    explicit MemoryMap(QWidget *parent = 0);
+    explicit MemoryMap(PropellerManager * manager, QWidget *parent = 0);
     void recolor(
             QColor hex_background,
             QColor hex_line,
@@ -24,11 +30,11 @@ public:
             QColor addr_highlight);
 
     void setFont(QFont font);
-    void loadFile(QString binaryfile);
-    void loadData(QByteArray binarydata);
+    void openFile(QString binaryfile);
+    void openData(QByteArray binarydata);
 public slots:
     void fixWidth(int width);
-    void load();
+    void open();
     void save();
     void updateColors();
     void sendRun();
