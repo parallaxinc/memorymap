@@ -2,4 +2,4 @@
 
 A memory map widget for PropellerIDE
 
-![](screenshots/MemoryMap_018.png)
+![](https://github.com/parallaxinc/memorymap/raw/master/screenshots/MemoryMap_018.png)
