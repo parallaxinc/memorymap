@@ -48,7 +48,7 @@ void MemoryMapPrivate::recolor(
     setAlternateHexColor(       hex_text_alt    );  // 00 and FF
 
     setAddressBackColor(        addr_background );  // address background
-    setAddressForeColor(        addr_text       );  // address text
+    setAddressForeColor(        addr_text       );  // address text, but ALSO highlighted hex
     setHighlightColor(          addr_highlight  );  // address highlighted text
 }
 
