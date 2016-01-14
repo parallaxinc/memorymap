@@ -35,12 +35,12 @@ void MemoryMap::openData(QByteArray binarydata)
     ui.memorybar->configure(
             0,
             8192,
-            image.programSize()/4,
+            image.codeSize()/4,
             image.variableSize()/4, 
             image.stackSize()/4
             ); 
 
-    ui.longsProgram->setText(QString::number(image.programSize()/4));
+    ui.longsProgram->setText(QString::number(image.codeSize()/4));
     ui.longsVariable->setText(QString::number(image.variableSize()/4));
     ui.longsStack->setText(QString::number(image.stackSize()/4));
 
