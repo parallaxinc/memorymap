@@ -2,11 +2,14 @@
 
 #include <QColor>
 #include <QWidget>
+#include <QLoggingCategory>
 
 #include <PropellerManager>
 #include <PropellerImage>
 
 #include "ui_memorymap.h"
+
+Q_DECLARE_LOGGING_CATEGORY(memorymap)
 
 class MemoryMap : public QWidget
 {
@@ -17,6 +20,7 @@ private:
     PropellerManager * manager;
     PropellerImage image;
     QString port;
+    void refreshView();
 
 public:
     explicit MemoryMap(PropellerManager * manager, QWidget *parent = 0);
@@ -39,6 +43,10 @@ public slots:
     void updateColors();
     void sendRun();
     void sendWrite();
+
+private slots:
+    void updateClockMode(const QString & name);
+    void updateClockFrequency();
 
 signals:
     void getRecolor(QWidget * widget);

@@ -427,28 +427,15 @@
           <widget class="QComboBox" name="clockMode"/>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>XIN Frequency:</string>
+            <string>Frequency (Hz):</string>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QLineEdit" name="clockXIN"/>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Frequency:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
           <widget class="QLineEdit" name="clockFrequency">
            <property name="frame">
-            <bool>true</bool>
-           </property>
-           <property name="readOnly">
             <bool>true</bool>
            </property>
           </widget>

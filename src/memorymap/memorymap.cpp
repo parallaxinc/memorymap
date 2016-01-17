@@ -2,22 +2,36 @@
 
 #include <QDataStream>
 #include <QFileDialog>
+#include <QIntValidator>
 
 #include <PropellerLoader>
 
 #include "memorymapprivate.h"
 
+Q_LOGGING_CATEGORY(memorymap, "memorymap")
+
 MemoryMap::MemoryMap(PropellerManager * manager, QWidget *parent) : QWidget(parent)
 {
     this->manager = manager;
     ui.setupUi(this);
+    ui.memorybar->configure(0, image.eepromSize()/4, 0, 0, 0); 
+    ui.clockFrequency->setValidator(new QIntValidator(0, 150000000, this));
+
+    foreach (QString m, image.listClockModes())
+    {
+        ui.clockMode->addItem(m, image.clockModeValue(m));
+    }
+
 //    connect(ui.memorymap, SIGNAL(widthChanged(int)), this, SLOT(fixWidth(int)));
     connect(ui.buttonOpen, SIGNAL(clicked()), this, SLOT(open()));
     connect(ui.buttonSave, SIGNAL(clicked()), this, SLOT(save()));
     connect(ui.buttonRun, SIGNAL(clicked()), this, SLOT(sendRun()));
     connect(ui.buttonWrite, SIGNAL(clicked()), this, SLOT(sendWrite()));
 
-    ui.memorybar->configure(0, 8192, 0, 0, 0); 
+    connect(ui.clockMode,       SIGNAL(currentIndexChanged(const QString &)),
+            this,               SLOT(updateClockMode(const QString &)));
+    connect(ui.clockFrequency,  SIGNAL(editingFinished()),
+            this,               SLOT(updateClockFrequency()));
 }
 
 void MemoryMap::openFile(QString binaryfile)
@@ -30,11 +44,16 @@ void MemoryMap::openFile(QString binaryfile)
 void MemoryMap::openData(QByteArray binarydata)
 {
     image.setData(binarydata);
-    ui.memorymap->loadData(binarydata);
+    refreshView();
+}
+
+void MemoryMap::refreshView()
+{
+    ui.memorymap->loadData(image.data());
 
     ui.memorybar->configure(
             0,
-            8192,
+            image.eepromSize()/4,
             image.codeSize()/4,
             image.variableSize()/4, 
             image.stackSize()/4
@@ -44,9 +63,8 @@ void MemoryMap::openData(QByteArray binarydata)
     ui.longsVariable->setText(QString::number(image.variableSize()/4));
     ui.longsStack->setText(QString::number(image.stackSize()/4));
 
-    ui.clockMode->addItem(image.clockModeText());
+    ui.clockMode->setCurrentIndex(ui.clockMode->findText(image.clockModeText()));
     ui.clockFrequency->setText(QString::number(image.clockFrequency()));
-
 }
 
 void MemoryMap::open()
@@ -136,3 +154,27 @@ void MemoryMap::keyPressEvent(QKeyEvent* event)
             break;
     }
 }
+
+void MemoryMap::updateClockMode(const QString & name)
+{
+    qCDebug(memorymap) << "new clock mode:" << name;
+    image.setClockMode(image.clockModeValue(name));
+    ui.memorymap->loadData(image.data());
+}
+
+void MemoryMap::updateClockFrequency()
+{
+    QString name = ui.clockFrequency->text();
+    bool ok;
+    int n = name.toInt(&ok);
+    if (!ok)
+    {
+        qCDebug(memorymap) << "invalid clock frequency:" << name;
+        return;
+    }
+
+    qCDebug(memorymap) << "new clock frequency:" << n;
+    image.setClockFrequency(n);
+    refreshView();
+}
+

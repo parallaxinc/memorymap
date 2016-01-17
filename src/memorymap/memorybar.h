@@ -21,7 +21,7 @@ private:
         QFrame::paintEvent(e);
 
         QPainter p(this);
-        p.drawLine(0,0,width(),height());
+//        p.drawLine(0,0,width(),height());
         drawBar(&p, 0, _program, Qt::red);
         drawBar(&p, _program, _program+_variable, Qt::yellow);
         drawBar(&p, _program+_variable, _program+_variable+_stack, Qt::blue);
