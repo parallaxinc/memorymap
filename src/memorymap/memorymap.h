@@ -36,6 +36,8 @@ public:
     void setFont(QFont font);
     void openFile(QString binaryfile);
     void openData(QByteArray binarydata);
+    void setModel(QStandardItemModel * model);
+
 public slots:
     void fixWidth(int width);
     void open();
@@ -50,7 +52,7 @@ private slots:
 
 signals:
     void getRecolor(QWidget * widget);
-    void run(QByteArray binary);
-    void write(QByteArray binary);
+    void run(const QByteArray & binary);
+    void write(const QByteArray & binary);
 };
 

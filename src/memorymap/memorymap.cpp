@@ -6,8 +6,6 @@
 
 #include <PropellerLoader>
 
-#include "memorymapprivate.h"
-
 Q_LOGGING_CATEGORY(memorymap, "memorymap")
 
 MemoryMap::MemoryMap(PropellerManager * manager, QWidget *parent) : QWidget(parent)
@@ -39,6 +37,11 @@ void MemoryMap::openFile(QString binaryfile)
     QFile file(binaryfile);
     if (!file.open(QIODevice::ReadOnly)) return;
     openData(file.readAll());
+}
+
+void MemoryMap::setModel(QStandardItemModel * model)
+{
+    ui.projectview->setModel(model);
 }
 
 void MemoryMap::openData(QByteArray binarydata)
@@ -158,6 +161,7 @@ void MemoryMap::keyPressEvent(QKeyEvent* event)
 void MemoryMap::updateClockMode(const QString & name)
 {
     qCDebug(memorymap) << "new clock mode:" << name;
+
     image.setClockMode(image.clockModeValue(name));
     ui.memorymap->loadData(image.data());
 }
